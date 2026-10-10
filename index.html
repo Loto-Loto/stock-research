@@ -1,62 +1,121 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>株式リサーチ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stock Research</title>
 <style>
-body {
-  font-family: sans-serif;
-  background: #f3f5f8;
-  color: #222;
-  margin: 0;
-  padding: 20px;
-}
-h1 { font-size: 25px; }
-.subtitle { color: #666; font-size: 14px; }
-.card {
-  background: white;
-  border-radius: 14px;
-  padding: 18px;
-  margin: 16px 0;
-  box-shadow: 0 2px 8px #0000000d;
-}
-.name { font-size: 18px; font-weight: bold; }
-.code { color: #777; font-size: 13px; }
-.note { color: #555; font-size: 14px; }
-.tag {
-  display: inline-block;
-  background: #e8f0ff;
-  color: #2458a6;
-  padding: 5px 9px;
-  border-radius: 8px;
-  font-size: 12px;
-}
+*{box-sizing:border-box}
+body{margin:0;background:#0b1020;color:#eef3ff;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+header{padding:24px 18px;border-bottom:1px solid #28344b}
+.tag{color:#76a9ff;font-size:12px;letter-spacing:2px}
+h1{margin:8px 0;font-size:27px}
+p{line-height:1.6}
+.sub,.muted{color:#9aa9c2;font-size:13px}
+main{max-width:800px;margin:auto;padding:18px}
+h2{font-size:17px;margin:24px 0 12px}
+.card{background:#151d30;border:1px solid #28344b;border-radius:15px;padding:17px;margin-bottom:12px}
+.head{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.name{font-size:18px;font-weight:bold}
+.code{font-size:12px;color:#9aa9c2;margin-top:5px}
+.badge{font-size:11px;color:#76a9ff;background:#1b3154;padding:7px;border-radius:7px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.metric{background:#0e1628;padding:12px;border-radius:10px}
+.label{font-size:12px;color:#9aa9c2}
+.value{font-size:17px;font-weight:bold;margin-top:7px}
+button{background:#203454;color:white;border:1px solid #344866;border-radius:9px;padding:12px;margin:5px 5px 5px 0;font-size:14px}
+input,textarea{width:100%;background:#0e1628;color:white;border:1px solid #344866;border-radius:9px;padding:12px;margin:8px 0 14px;font:inherit}
+textarea{min-height:100px}
+footer{text-align:center;color:#9aa9c2;font-size:11px;padding:24px}
 </style>
 </head>
 <body>
-<h1>📈 株式リサーチ</h1>
-<p class="subtitle">My Stock Research｜監視銘柄</p>
+<header>
+<div class="tag">PERSONAL INVESTMENT DASHBOARD</div>
+<h1>Stock Research</h1>
+<div class="sub">株価・信用需給・ニュースをここに集約</div>
+</header>
+<main>
+<h2>ウォッチリスト</h2>
 
 <div class="card">
-  <div class="name">東京エレクトロン</div>
-  <div class="code">8035｜東証プライム</div>
-  <p class="note">株価・信用倍率・ニュースをここに集約</p>
-  <span class="tag">半導体製造装置</span>
+<div class="head">
+<div><div class="name">東京エレクトロン</div><div class="code">8035 · 東証プライム</div></div>
+<span class="badge">半導体</span>
+</div>
+<div class="grid">
+<div class="metric"><div class="label">現在株価</div><div class="value">未接続</div></div>
+<div class="metric"><div class="label">信用倍率</div><div class="value">未接続</div></div>
+<div class="metric"><div class="label">買い残</div><div class="value">未接続</div></div>
+<div class="metric"><div class="label">売り残</div><div class="value">未接続</div></div>
+</div>
+<p class="muted">株価・信用データの取得機能は次の段階で接続します。</p>
+<button onclick="news('東京エレクトロン 8035')">関連ニュースを検索</button>
 </div>
 
 <div class="card">
-  <div class="name">TDK</div>
-  <div class="code">6762｜東証プライム</div>
-  <p class="note">株価・信用倍率・ニュースをここに集約</p>
-  <span class="tag">電子部品・AI関連</span>
+<div class="head">
+<div><div class="name">TDK</div><div class="code">6762 · 東証プライム</div></div>
+<span class="badge">電子部品・AI</span>
+</div>
+<div class="grid">
+<div class="metric"><div class="label">現在株価</div><div class="value">未接続</div></div>
+<div class="metric"><div class="label">信用倍率</div><div class="value">未接続</div></div>
+<div class="metric"><div class="label">買い残</div><div class="value">未接続</div></div>
+<div class="metric"><div class="label">売り残</div><div class="value">未接続</div></div>
+</div>
+<p class="muted">株価・信用データの取得機能は次の段階で接続します。</p>
+<button onclick="news('TDK 6762')">関連ニュースを検索</button>
 </div>
 
+<h2>ニュース検索</h2>
 <div class="card">
-  <h2>📝 今日の分析</h2>
-  <p class="note">これから信用需給の変化、決算、ニュースをもとに分析できるようにしていきます。</p>
+<label for="query">銘柄名・キーワード</label>
+<input id="query" value="東京エレクトロン TDK AI 半導体">
+<button onclick="news(document.getElementById('query').value)">ニュースを検索</button>
 </div>
 
-<p class="subtitle">初期バージョン｜株価データはまだ未接続</p>
+<h2>投資メモ</h2>
+<div class="card">
+<label for="date">記録日</label>
+<input id="date" type="date">
+<label for="memo">相場観・信用需給・売買戦略</label>
+<textarea id="memo" placeholder="例：信用買い残が減少してからエントリーを検討"></textarea>
+<button onclick="saveMemo()">メモを保存</button>
+<div id="saved"></div>
+<p class="muted">メモはこのブラウザ内に保存されます。端末間では同期されません。</p>
+</div>
+</main>
+<footer>Stock Research · 投資判断はご自身でご確認ください</footer>
+<script>
+function news(q){
+ location.href='https://www.google.com/search?q='+encodeURIComponent(q+' 株価 ニュース');
+}
+const date=document.getElementById('date');
+date.value=new Date().toLocaleDateString('sv-SE');
+function saveMemo(){
+ const memo=document.getElementById('memo').value.trim();
+ if(!memo){alert('メモを入力してください');return}
+ const items=JSON.parse(localStorage.getItem('stockMemos')||'[]');
+ items.unshift({date:date.value,memo:memo});
+ localStorage.setItem('stockMemos',JSON.stringify(items));
+ document.getElementById('memo').value='';
+ showMemos();
+ alert('保存しました');
+}
+function showMemos(){
+ const items=JSON.parse(localStorage.getItem('stockMemos')||'[]');
+ const box=document.getElementById('saved');
+ box.replaceChildren();
+ items.forEach(item=>{
+  const p=document.createElement('p');
+  p.className='muted';
+  p.textContent=item.date+'：'+item.memo;
+  box.appendChild(p);
+ });
+}
+showMemos();
+</script>
 </body>
 </html>
