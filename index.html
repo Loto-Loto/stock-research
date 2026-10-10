@@ -1,121 +1,146 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Stock Research</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101827">
+<title>株式リサーチ</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#0b1020;color:#eef3ff;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
-header{padding:24px 18px;border-bottom:1px solid #28344b}
-.tag{color:#76a9ff;font-size:12px;letter-spacing:2px}
-h1{margin:8px 0;font-size:27px}
-p{line-height:1.6}
-.sub,.muted{color:#9aa9c2;font-size:13px}
-main{max-width:800px;margin:auto;padding:18px}
-h2{font-size:17px;margin:24px 0 12px}
-.card{background:#151d30;border:1px solid #28344b;border-radius:15px;padding:17px;margin-bottom:12px}
-.head{display:flex;justify-content:space-between;gap:10px;align-items:center}
-.name{font-size:18px;font-weight:bold}
-.code{font-size:12px;color:#9aa9c2;margin-top:5px}
-.badge{font-size:11px;color:#76a9ff;background:#1b3154;padding:7px;border-radius:7px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
-.metric{background:#0e1628;padding:12px;border-radius:10px}
-.label{font-size:12px;color:#9aa9c2}
-.value{font-size:17px;font-weight:bold;margin-top:7px}
-button{background:#203454;color:white;border:1px solid #344866;border-radius:9px;padding:12px;margin:5px 5px 5px 0;font-size:14px}
-input,textarea{width:100%;background:#0e1628;color:white;border:1px solid #344866;border-radius:9px;padding:12px;margin:8px 0 14px;font:inherit}
-textarea{min-height:100px}
-footer{text-align:center;color:#9aa9c2;font-size:11px;padding:24px}
+:root{--bg:#0b1220;--panel:#131e30;--panel2:#19263b;--line:#2b3a51;--text:#eef4ff;--muted:#9eacc2;--accent:#6ee7b7;--red:#ff8d9a;--blue:#8db8ff}
+*{box-sizing:border-box;min-width:0}html,body{width:100%;max-width:100%;overflow-x:hidden}body{margin:0;background:linear-gradient(180deg,#0b1220,#101827 35%,#0b1220);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:15px;padding:0 0 40px}
+header{padding:24px 16px 18px;background:#101827;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:3}
+.headrow{display:flex;align-items:center;justify-content:space-between;gap:12px}.eyebrow{font-size:11px;letter-spacing:.14em;color:var(--accent);font-weight:800}.brand{font-size:24px;font-weight:850;letter-spacing:-.04em;margin:4px 0}.sub{font-size:12px;color:var(--muted)}
+main{max-width:760px;margin:0 auto;padding:16px;display:grid;gap:14px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 8px 24px #0002}
+h2{font-size:16px;margin:0 0 12px}h3{font-size:14px;margin:0 0 8px}.muted{color:var(--muted);font-size:12px;line-height:1.5}.row{display:flex;gap:8px;align-items:center}.row.wrap{flex-wrap:wrap}.row.between{justify-content:space-between}.grow{flex:1;min-width:0}
+button,select,input,textarea{font:inherit}button{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:11px;padding:10px 12px;font-weight:700;cursor:pointer}button.primary{background:var(--accent);color:#06251b;border-color:var(--accent)}button.danger{color:var(--red)}button.small{font-size:12px;padding:7px 9px}button:active{transform:scale(.98)}
+input,select,textarea{display:block;width:100%;max-width:100%;min-width:0;background:#0b1423;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px;outline:none}input[type=date],input[type=number]{font-size:16px}input[type=date]{-webkit-appearance:none;appearance:none}input:focus,select:focus,textarea:focus{border-color:var(--accent)}label{display:block;color:var(--muted);font-size:12px;margin:0 0 6px}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;min-width:0}.field{min-width:0;overflow:hidden}.field.full{grid-column:1/-1}
+.stock-list{display:grid;gap:9px}.stock{padding:13px;border:1px solid var(--line);border-radius:13px;background:#0f1929;display:flex;align-items:center;gap:10px}.stock.active{border-color:var(--accent);box-shadow:inset 0 0 0 1px #6ee7b733}.stockname{font-weight:800}.stockcode{font-size:12px;color:var(--muted);margin-top:3px}.stockmeta{font-size:12px;color:var(--muted);text-align:right}.stockmeta strong{display:block;color:var(--text);font-size:14px;margin-bottom:3px}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:14px}.stat{background:#0d1726;border:1px solid var(--line);border-radius:13px;padding:12px}.stat .k{font-size:11px;color:var(--muted)}.stat .v{font-size:19px;font-weight:850;margin-top:5px;word-break:break-word}.stat .s{font-size:11px;color:var(--muted);margin-top:3px}
+.tabs{display:flex;gap:7px;overflow-x:auto;padding-bottom:2px}.tab{white-space:nowrap;font-size:12px}.tab.on{border-color:var(--accent);color:var(--accent)}
+canvas{width:100%;height:190px;display:block;background:#0c1524;border:1px solid var(--line);border-radius:12px;margin-top:8px}
+table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}th,td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}th:first-child,td:first-child{text-align:left}th{color:var(--muted);font-weight:600}.tablewrap{overflow-x:auto}
+.notice{padding:10px 12px;border-radius:10px;background:#18283b;color:#b9c9e1;font-size:12px;line-height:1.55}.foot{font-size:11px;color:var(--muted);line-height:1.6;text-align:center;padding:0 12px}
+.hidden{display:none!important}.divider{height:1px;background:var(--line);margin:14px 0}.empty{padding:18px;text-align:center;color:var(--muted);font-size:13px}
+@media(max-width:360px){main{padding:10px}.panel{padding:12px}.fields{grid-template-columns:minmax(0,1fr)}.field.full{grid-column:auto}.brand{font-size:21px}}\n@media(min-width:620px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}.fields{grid-template-columns:repeat(3,minmax(0,1fr))}.field.full{grid-column:1/-1}header{padding-left:max(16px,calc((100vw - 728px)/2))}}
 </style>
 </head>
 <body>
-<header>
-<div class="tag">PERSONAL INVESTMENT DASHBOARD</div>
-<h1>Stock Research</h1>
-<div class="sub">株価・信用需給・ニュースをここに集約</div>
-</header>
+<header><div class="headrow"><div><div class="eyebrow">PERSONAL MARKET DASHBOARD</div><div class="brand">株式リサーチ</div><div class="sub">手入力で記録・比較する自分専用ダッシュボード</div></div><button class="small" id="exportTop">バックアップ</button></div></header>
 <main>
-<h2>ウォッチリスト</h2>
-
-<div class="card">
-<div class="head">
-<div><div class="name">東京エレクトロン</div><div class="code">8035 · 東証プライム</div></div>
-<span class="badge">半導体</span>
-</div>
-<div class="grid">
-<div class="metric"><div class="label">現在株価</div><div class="value">未接続</div></div>
-<div class="metric"><div class="label">信用倍率</div><div class="value">未接続</div></div>
-<div class="metric"><div class="label">買い残</div><div class="value">未接続</div></div>
-<div class="metric"><div class="label">売り残</div><div class="value">未接続</div></div>
-</div>
-<p class="muted">株価・信用データの取得機能は次の段階で接続します。</p>
-<button onclick="news('東京エレクトロン 8035')">関連ニュースを検索</button>
-</div>
-
-<div class="card">
-<div class="head">
-<div><div class="name">TDK</div><div class="code">6762 · 東証プライム</div></div>
-<span class="badge">電子部品・AI</span>
-</div>
-<div class="grid">
-<div class="metric"><div class="label">現在株価</div><div class="value">未接続</div></div>
-<div class="metric"><div class="label">信用倍率</div><div class="value">未接続</div></div>
-<div class="metric"><div class="label">買い残</div><div class="value">未接続</div></div>
-<div class="metric"><div class="label">売り残</div><div class="value">未接続</div></div>
-</div>
-<p class="muted">株価・信用データの取得機能は次の段階で接続します。</p>
-<button onclick="news('TDK 6762')">関連ニュースを検索</button>
-</div>
-
-<h2>ニュース検索</h2>
-<div class="card">
-<label for="query">銘柄名・キーワード</label>
-<input id="query" value="東京エレクトロン TDK AI 半導体">
-<button onclick="news(document.getElementById('query').value)">ニュースを検索</button>
-</div>
-
-<h2>投資メモ</h2>
-<div class="card">
-<label for="date">記録日</label>
-<input id="date" type="date">
-<label for="memo">相場観・信用需給・売買戦略</label>
-<textarea id="memo" placeholder="例：信用買い残が減少してからエントリーを検討"></textarea>
-<button onclick="saveMemo()">メモを保存</button>
-<div id="saved"></div>
-<p class="muted">メモはこのブラウザ内に保存されます。端末間では同期されません。</p>
-</div>
+<section class="panel">
+ <div class="row between"><h2>監視銘柄</h2><button class="primary small" id="showAdd">＋ 銘柄追加</button></div>
+ <div class="stock-list" id="stockList"></div>
+ <div id="addStock" class="hidden">
+  <div class="divider"></div><h3>新しい銘柄を追加</h3>
+  <div class="fields">
+   <div class="field"><label for="newName">銘柄名</label><input id="newName" placeholder="例：東計電算"></div>
+   <div class="field"><label for="newCode">証券コード</label><input id="newCode" inputmode="numeric" placeholder="例：4746"></div>
+  </div>
+  <div class="row" style="margin-top:10px"><button class="primary grow" id="addStockBtn">追加する</button><button id="cancelAdd">キャンセル</button></div>
+ </div>
+</section>
+<section class="panel">
+ <div class="row between"><h2 id="selectedTitle">銘柄データ</h2><button class="danger small" id="deleteStock">銘柄削除</button></div>
+ <div class="stats" id="stats"></div>
+ <div class="notice">株価・信用残は自動取得ではありません。証券会社や信頼できる情報源で確認した数値を入力してください。信用残の基準日も記録すると比較しやすくなります。</div>
+ <div class="divider"></div><h3>日次データを入力</h3>
+ <div class="fields" style="margin-top:10px">
+  <div class="field"><label for="entryDate">日付（株価）</label><input type="date" id="entryDate"></div>
+  <div class="field"><label for="closePrice">終値（円）</label><input type="number" id="closePrice" inputmode="decimal" step="any" placeholder="例：12395"></div>
+  <div class="field"><label for="changeYen">前日比（円）</label><input type="number" id="changeYen" inputmode="decimal" step="any" placeholder="例：125"></div>
+  <div class="field"><label for="buyBal">信用買い残（株）</label><input type="number" id="buyBal" inputmode="decimal" step="any" placeholder="例：1234500"></div>
+  <div class="field"><label for="sellBal">信用売り残（株）</label><input type="number" id="sellBal" inputmode="decimal" step="any" placeholder="例：234500"></div>
+  <div class="field"><label for="creditDate">信用残の基準日</label><input type="date" id="creditDate"></div>
+  <div class="field full"><label for="entryMemo">メモ（決算・ニュース・売買方針など）</label><textarea id="entryMemo" rows="2" placeholder="例：信用買い残が減少。決算前なので様子見"></textarea></div>
+ </div>
+ <div class="row wrap" style="margin-top:12px"><button class="primary grow" id="saveEntry">この日付のデータを保存</button><button id="clearForm">入力をクリア</button></div>
+ <p class="muted" style="margin-bottom:0">同じ銘柄・同じ日付のデータを再保存すると、その日の記録を更新します。</p>
+</section>
+<section class="panel">
+ <div class="row between"><h2>推移グラフ</h2><select id="chartMetric" style="width:auto;max-width:180px"><option value="close">終値（円）</option><option value="ratio">信用倍率</option><option value="buy">信用買い残（株）</option><option value="sell">信用売り残（株）</option></select></div>
+ <canvas id="chart" width="700" height="260" aria-label="推移グラフ"></canvas>
+ <div id="chartCaption" class="muted" style="margin-top:8px"></div>
+</section>
+<section class="panel">
+ <div class="row between"><h2>記録履歴</h2><span class="muted" id="historyCount"></span></div>
+ <div class="tablewrap" id="history"></div>
+</section>
+<section class="panel">
+ <h2>データのバックアップ・復元</h2>
+ <p class="muted">データはこのブラウザ内に保存されます。機種変更・ブラウザデータ削除に備え、定期的にバックアップを保存してください。</p>
+ <div class="row wrap"><button class="primary" id="exportBtn">JSONを書き出す</button><button id="importBtn">バックアップを復元</button><input class="hidden" type="file" id="importFile" accept=".json,application/json"></div>
+ <div class="row wrap" style="margin-top:10px"><button class="small danger" id="clearAll">全データを削除</button></div>
+ <div id="message" class="muted" style="margin-top:10px" role="status"></div>
+</section>
+<div class="foot">株式リサーチ • 入力内容は端末のブラウザ内に保存されます。投資判断は複数の情報源を確認して行ってください。</div>
 </main>
-<footer>Stock Research · 投資判断はご自身でご確認ください</footer>
 <script>
-function news(q){
- location.href='https://www.google.com/search?q='+encodeURIComponent(q+' 株価 ニュース');
+(function(){
+const KEY='stockResearchApp_v1';
+const defaultData={version:1,stocks:[
+{id:'8035',name:'東京エレクトロン',code:'8035',entries:[]},
+{id:'6762',name:'TDK',code:'6762',entries:[]}
+]};
+let data=loadData(),selectedId=data.stocks[0]?.id||null,editingDate=null;
+const $=id=>document.getElementById(id);
+function loadData(){try{const x=JSON.parse(localStorage.getItem(KEY));if(x&&Array.isArray(x.stocks))return x}catch(e){}return JSON.parse(JSON.stringify(defaultData))}
+function persist(){localStorage.setItem(KEY,JSON.stringify(data))}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function fmt(v,d=2){if(v===null||v===undefined||v===''||!Number.isFinite(Number(v)))return '—';return Number(v).toLocaleString('ja-JP',{maximumFractionDigits:d})}
+function selected(){return data.stocks.find(s=>s.id===selectedId)||data.stocks[0]}
+function sortedEntries(s){return [...(s?.entries||[])].sort((a,b)=>a.date.localeCompare(b.date))}
+function ratio(e){let b=Number(e.buy),s=Number(e.sell);return e.buy!==''&&e.sell!==''&&Number.isFinite(b)&&Number.isFinite(s)&&s>0?b/s:null}
+function latest(s){return sortedEntries(s).slice(-1)[0]}
+function renderStocks(){
+ const box=$('stockList');box.innerHTML='';
+ if(!data.stocks.length){box.innerHTML='<div class="empty">銘柄がありません。「銘柄追加」から追加してください。</div>';return}
+ data.stocks.forEach(s=>{const e=latest(s),el=document.createElement('button');el.className='stock'+(s.id===selectedId?' active':'');el.style.textAlign='left';el.innerHTML='<div class="grow"><div class="stockname">'+esc(s.name)+'</div><div class="stockcode">'+esc(s.code)+'</div></div><div class="stockmeta"><strong>'+(e&&e.close!==''?fmt(e.close)+'円':'未入力')+'</strong>'+(e?esc(e.date):'データなし')+'</div>';el.addEventListener('click',()=>{selectedId=s.id;editingDate=null;clearForm();renderAll()});box.appendChild(el)})
 }
-const date=document.getElementById('date');
-date.value=new Date().toLocaleDateString('sv-SE');
-function saveMemo(){
- const memo=document.getElementById('memo').value.trim();
- if(!memo){alert('メモを入力してください');return}
- const items=JSON.parse(localStorage.getItem('stockMemos')||'[]');
- items.unshift({date:date.value,memo:memo});
- localStorage.setItem('stockMemos',JSON.stringify(items));
- document.getElementById('memo').value='';
- showMemos();
- alert('保存しました');
+function renderStats(){
+ const s=selected();$('selectedTitle').textContent=s?s.name+'（'+s.code+'）':'銘柄データ';const e=latest(s);
+ const items=[['最新終値',e&&e.close!==''?fmt(e.close)+'円':'—',e?e.date:'記録なし'],['前日比',e&&e.change!==''?(Number(e.change)>0?'+':'')+fmt(e.change)+'円':'—','入力値'],['信用倍率',e&&ratio(e)!==null?fmt(ratio(e))+'倍':'—',e&&e.creditDate?'基準 '+e.creditDate:'信用残未入力'],['記録件数',String(s?.entries.length||0)+'件','この銘柄']];
+ $('stats').innerHTML=items.map(a=>'<div class="stat"><div class="k">'+a[0]+'</div><div class="v">'+a[1]+'</div><div class="s">'+a[2]+'</div></div>').join('');
+ $('deleteStock').disabled=!s;
 }
-function showMemos(){
- const items=JSON.parse(localStorage.getItem('stockMemos')||'[]');
- const box=document.getElementById('saved');
- box.replaceChildren();
- items.forEach(item=>{
-  const p=document.createElement('p');
-  p.className='muted';
-  p.textContent=item.date+'：'+item.memo;
-  box.appendChild(p);
- });
+function renderHistory(){
+ const s=selected(),arr=sortedEntries(s).reverse();$('historyCount').textContent=arr.length+'件';
+ if(!arr.length){$('history').innerHTML='<div class="empty">まだ記録がありません。上のフォームから入力してね。</div>';return}
+ $('history').innerHTML='<table><thead><tr><th>日付</th><th>終値</th><th>前日比</th><th>買い残</th><th>売り残</th><th>倍率</th><th>操作</th></tr></thead><tbody>'+arr.map(e=>'<tr><td>'+esc(e.date)+(e.creditDate?'<div style="color:var(--muted);font-size:10px">信用 '+esc(e.creditDate)+'</div>':'')+'</td><td>'+(e.close!==''?fmt(e.close):'—')+'</td><td>'+(e.change!==''?(Number(e.change)>0?'+':'')+fmt(e.change):'—')+'</td><td>'+(e.buy!==''?fmt(e.buy,0):'—')+'</td><td>'+(e.sell!==''?fmt(e.sell,0):'—')+'</td><td>'+(ratio(e)!==null?fmt(ratio(e))+'倍':'—')+'</td><td><button class="small" data-edit="'+esc(e.date)+'">編集</button> <button class="small danger" data-del="'+esc(e.date)+'">削除</button></td></tr>').join('')+'</tbody></table>';
+ $('history').querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>editEntry(b.dataset.edit)));
+ $('history').querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',()=>{if(confirm(b.dataset.del+' の記録を削除する？')){const s=selected();s.entries=s.entries.filter(e=>e.date!==b.dataset.del);persist();renderAll()}}))
 }
-showMemos();
+function drawChart(){
+ const canvas=$('chart'),ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);ctx.fillStyle='#0c1524';ctx.fillRect(0,0,w,h);
+ const s=selected(),arr=sortedEntries(s),metric=$('chartMetric').value;
+ const pts=arr.map(e=>({date:e.date,val:metric==='close'?(e.close===''?null:Number(e.close)):metric==='ratio'?ratio(e):metric==='buy'?(e.buy===''?null:Number(e.buy)):(e.sell===''?null:Number(e.sell))})).filter(p=>p.val!==null&&Number.isFinite(p.val));
+ if(!pts.length){ctx.fillStyle='#9eacc2';ctx.font='16px sans-serif';ctx.textAlign='center';ctx.fillText('データを入力するとグラフが表示されます',w/2,h/2);$('chartCaption').textContent='表示できるデータがありません。';return}
+ const pad={l:62,r:18,t:18,b:40},min=Math.min(...pts.map(p=>p.val)),max=Math.max(...pts.map(p=>p.val)),range=max-min||Math.max(Math.abs(max)*.1,1);
+ const lo=min-range*.12,hi=max+range*.12;
+ ctx.strokeStyle='#26364c';ctx.lineWidth=1;ctx.fillStyle='#9eacc2';ctx.font='11px sans-serif';ctx.textAlign='right';
+ for(let i=0;i<5;i++){let y=pad.t+(h-pad.t-pad.b)*i/4;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(w-pad.r,y);ctx.stroke();ctx.fillText(fmt(hi-(hi-lo)*i/4,2),pad.l-8,y+4)}
+ const x=i=>pts.length===1?(pad.l+w-pad.r)/2:pad.l+(w-pad.l-pad.r)*i/(pts.length-1),y=v=>pad.t+(h-pad.t-pad.b)*(hi-v)/(hi-lo);
+ ctx.strokeStyle='#6ee7b7';ctx.lineWidth=3;ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(x(i),y(p.val)):ctx.moveTo(x(i),y(p.val)));ctx.stroke();
+ pts.forEach((p,i)=>{ctx.fillStyle='#6ee7b7';ctx.beginPath();ctx.arc(x(i),y(p.val),3.5,0,Math.PI*2);ctx.fill()});
+ ctx.textAlign='center';ctx.fillStyle='#9eacc2';ctx.fillText(pts[0].date,pad.l,h-14);ctx.fillText(pts[pts.length-1].date,w-pad.r,h-14);
+ const labels={close:'終値（円）',ratio:'信用倍率（倍）',buy:'信用買い残（株）',sell:'信用売り残（株）'};$('chartCaption').textContent=labels[metric]+' • '+pts.length+'件の記録';
+}
+function renderAll(){renderStocks();renderStats();renderHistory();drawChart()}
+function dateNow(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function clearForm(){editingDate=null;$('entryDate').value=dateNow();$('creditDate').value='';['closePrice','changeYen','buyBal','sellBal','entryMemo'].forEach(id=>$(id).value='');$('saveEntry').textContent='この日付のデータを保存'}
+function editEntry(date){const e=selected().entries.find(x=>x.date===date);if(!e)return;editingDate=date;$('entryDate').value=e.date;$('closePrice').value=e.close??'';$('changeYen').value=e.change??'';$('buyBal').value=e.buy??'';$('sellBal').value=e.sell??'';$('creditDate').value=e.creditDate||'';$('entryMemo').value=e.memo||'';$('saveEntry').textContent='記録を更新';document.querySelector('section.panel:nth-of-type(2)').scrollIntoView({behavior:'smooth',block:'start'})}
+$('showAdd').onclick=()=>{$('addStock').classList.toggle('hidden');if(!$('addStock').classList.contains('hidden'))$('newName').focus()};
+$('cancelAdd').onclick=()=>$('addStock').classList.add('hidden');
+$('addStockBtn').onclick=()=>{const name=$('newName').value.trim(),code=$('newCode').value.trim();if(!name||!code){alert('銘柄名と証券コードを入力してね。');return}if(data.stocks.some(s=>s.code===code)){alert('その証券コードはすでに登録されているよ。');return}const s={id:code+'_'+Date.now(),name,code,entries:[]};data.stocks.push(s);selectedId=s.id;$('newName').value='';$('newCode').value='';$('addStock').classList.add('hidden');persist();clearForm();renderAll()};
+$('deleteStock').onclick=()=>{const s=selected();if(!s)return;if(!confirm('「'+s.name+'」と、この銘柄の全履歴を削除する？事前にバックアップしておくのがおすすめ。'))return;data.stocks=data.stocks.filter(x=>x.id!==s.id);selectedId=data.stocks[0]?.id||null;persist();clearForm();renderAll()};
+$('saveEntry').onclick=()=>{const s=selected();if(!s){alert('先に銘柄を追加してね。');return}const date=$('entryDate').value;if(!date){alert('日付を入力してね。');return}const e={date,close:$('closePrice').value,change:$('changeYen').value,buy:$('buyBal').value,sell:$('sellBal').value,creditDate:$('creditDate').value,memo:$('entryMemo').value.trim()};if(e.close===''&&e.change===''&&e.buy===''&&e.sell===''&&!e.memo){alert('少なくとも1項目入力してね。');return}const idx=s.entries.findIndex(x=>x.date===date);if(idx>=0){if(!confirm('同じ日付の記録があるよ。上書きする？'))return;s.entries[idx]=e}else s.entries.push(e);persist();clearForm();renderAll();$('message').textContent=date+' の記録を保存したよ。'};
+$('clearForm').onclick=clearForm;$('chartMetric').onchange=drawChart;
+function exportData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='stock-research-backup-'+dateNow()+'.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);$('message').textContent='バックアップを書き出したよ。ファイルアプリなどに保存してね。'}
+$('exportBtn').onclick=exportData;$('exportTop').onclick=exportData;
+$('importBtn').onclick=()=>$('importFile').click();
+$('importFile').onchange=async ev=>{const f=ev.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x||!Array.isArray(x.stocks)||!x.stocks.every(s=>s.name&&s.code&&Array.isArray(s.entries)))throw Error('形式');if(!confirm('現在のデータをバックアップの内容で置き換える？'))return;data={version:1,stocks:x.stocks};selectedId=data.stocks[0]?.id||null;persist();clearForm();renderAll();$('message').textContent='バックアップを復元したよ。'}catch(e){alert('バックアップファイルを読み込めなかったよ。正しいJSONファイルか確認してね。')}ev.target.value=''};
+$('clearAll').onclick=()=>{if(!confirm('全銘柄・全履歴を削除する？先にバックアップしてね。'))return;if(!confirm('本当に削除する？この操作は元に戻せないよ。'))return;data={version:1,stocks:[]};selectedId=null;persist();clearForm();renderAll();$('message').textContent='全データを削除しました。'};
+if(!selectedId){selectedId=data.stocks[0]?.id||null}if(!localStorage.getItem(KEY))persist();clearForm();renderAll();
+})();
 </script>
 </body>
 </html>
